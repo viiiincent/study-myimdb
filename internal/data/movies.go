@@ -140,8 +140,6 @@ func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*M
 	return movies, metadata, nil
 }
 
-
-
 func (m MovieModel) Update(movie *Movie) error {
 	query := `
 		UPDATE movies
