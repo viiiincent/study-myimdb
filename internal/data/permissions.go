@@ -54,5 +54,6 @@ func (m PermissionModel) GetAllForUser(userID int64) (Permissions, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
+
 	return permissions, nil
 }
