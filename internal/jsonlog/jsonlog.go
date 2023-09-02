@@ -20,13 +20,14 @@ const (
 
 func (l Level) String() string {
 	switch l {
-		case LevelInfo:
-			return "INFO"
-		case LevelError:
-			return "ERROR"
-		case LevelFatal:
-			return "FATAL"
-		default: return ""
+	case LevelInfo:
+		return "INFO"
+	case LevelError:
+		return "ERROR"
+	case LevelFatal:
+		return "FATAL"
+	default:
+		return ""
 	}
 }
 
@@ -38,7 +39,7 @@ type Logger struct {
 
 func New(out io.Writer, minLevel Level) *Logger {
 	return &Logger{
-		out: out,
+		out:      out,
 		minLevel: minLevel,
 	}
 }
@@ -46,7 +47,6 @@ func New(out io.Writer, minLevel Level) *Logger {
 func (l *Logger) PrintInfo(message string, properties map[string]string) {
 	l.print(LevelInfo, message, properties)
 }
-
 
 func (l *Logger) PrintError(err error, properties map[string]string) {
 	l.print(LevelError, err.Error(), properties)

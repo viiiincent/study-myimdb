@@ -42,10 +42,10 @@ func (p *password) Set(plaintextPassword string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	p.plaintext = &plaintextPassword
 	p.hash = hash
-	
+
 	return nil
 }
 
@@ -53,10 +53,10 @@ func (p *password) Matches(plaintextPassword string) (bool, error) {
 	err := bcrypt.CompareHashAndPassword(p.hash, []byte(plaintextPassword))
 	if err != nil {
 		switch {
-			case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
-				return false, nil
-			default:
-				return false, err
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			return false, nil
+		default:
+			return false, err
 		}
 	}
 
@@ -69,13 +69,13 @@ func ValidateEmail(v *validator.Validator, email string) {
 }
 
 func ValidatePasswordPlaintext(v *validator.Validator, password string) {
-	v.Check(password != "",      "password", "must be provided")
-	v.Check(len(password) >= 8,  "password", "must be at least 8 bytes long")
+	v.Check(password != "", "password", "must be provided")
+	v.Check(len(password) >= 8, "password", "must be at least 8 bytes long")
 	v.Check(len(password) <= 72, "password", "must not be more than 72 bytes long")
 }
 
 func ValidateUser(v *validator.Validator, user *User) {
-	v.Check(user.Name != "",       "name", "must be provided")
+	v.Check(user.Name != "", "name", "must be provided")
 	v.Check(len(user.Name) <= 500, "name", "must not be more than 500 bytes long")
 
 	ValidateEmail(v, user.Email)
@@ -106,12 +106,12 @@ func (m UserModel) Insert(user *User) error {
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(&user.ID, &user.CreatedAt, &user.Version)
 	if err != nil {
 		switch {
-			case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
-				return ErrDuplicateEmail
-			default:
-				return err
+		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
+			return ErrDuplicateEmail
+		default:
+			return err
 		}
-	}	
+	}
 
 	return nil
 }
@@ -122,7 +122,7 @@ func (m UserModel) GetByEmail(email string) (*User, error) {
 		FROM users
 		WHERE email = $1
 	`
-	
+
 	var user User
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -139,10 +139,10 @@ func (m UserModel) GetByEmail(email string) (*User, error) {
 
 	if err != nil {
 		switch {
-			case errors.Is(err, sql.ErrNoRows):
-				return nil, ErrRecordNotFound
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
 		default:
-				return nil, err
+			return nil, err
 		}
 	}
 
@@ -172,12 +172,12 @@ func (m UserModel) Update(user *User) error {
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(&user.Version)
 	if err != nil {
 		switch {
-			case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
-				return ErrDuplicateEmail
-			case errors.Is(err, sql.ErrNoRows):
-				return ErrEditConflict
-			default:
-				return err
+		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
+			return ErrDuplicateEmail
+		case errors.Is(err, sql.ErrNoRows):
+			return ErrEditConflict
+		default:
+			return err
 		}
 	}
 
@@ -214,10 +214,10 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 	)
 	if err != nil {
 		switch {
-			case errors.Is(err, sql.ErrNoRows):
-				return nil, ErrRecordNotFound
-			default:
-				return nil, err
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
 		}
 	}
 

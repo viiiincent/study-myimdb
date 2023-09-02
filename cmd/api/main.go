@@ -58,23 +58,23 @@ func main() {
 	var cfg config
 
 	// http server
-	flag.IntVar(&cfg.port,              "port",              4000,          "API server port")
-	flag.StringVar(&cfg.env,            "env",               "development", "Environment (development|staging|production)")
+	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 	// database
-	flag.StringVar(&cfg.db.dsn,         "db-dsn",            "",    "PostgreSQL DSN")
-	flag.IntVar(&cfg.db.maxOpenConns,   "db-max-open-conns", 25,    "PostgreSQL max open connections")
-	flag.IntVar(&cfg.db.maxIdleConns,   "db-max-idle-conns", 25,    "PostgreSQL max idle connections")
-	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time",  "15m", "PostgreSQL max connection idle time")
+	flag.StringVar(&cfg.db.dsn, "db-dsn", "", "PostgreSQL DSN")
+	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
+	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
+	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "PostgreSQL max connection idle time")
 	// rate limiter
-	flag.Float64Var(&cfg.limiter.rps,   "limiter-rps",     2,    "Rate limiter maximum requests per second")
-	flag.IntVar(&cfg.limiter.burst,     "limiter-burst",   4,    "Rate limiter maximum burst")
-	flag.BoolVar(&cfg.limiter.enabled,  "limiter-enabled", true, "Enable rate limiter")
+	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 2, "Rate limiter maximum requests per second")
+	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 4, "Rate limiter maximum burst")
+	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Enable rate limiter")
 	// mailer
-	flag.StringVar(&cfg.smtp.host,     "smtp-host",     "sandbox.smtp.mailtrap.io", "SMTP host")
-	flag.IntVar(&cfg.smtp.port,        "smtp-port",     25, "SMTP port")
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "sandbox.smtp.mailtrap.io", "SMTP host")
+	flag.IntVar(&cfg.smtp.port, "smtp-port", 25, "SMTP port")
 	flag.StringVar(&cfg.smtp.username, "smtp-username", "d518ae93895b1b", "SMTP username")
 	flag.StringVar(&cfg.smtp.password, "smtp-password", "a6b80fa828bfc5", "SMTP password")
-	flag.StringVar(&cfg.smtp.sender,   "smtp-sender",   "MyIMDB <no-reply@myimdb.lol>", "SMTP sender")
+	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "MyIMDB <no-reply@myimdb.lol>", "SMTP sender")
 	// cors
 	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
 		cfg.cors.trustedOrigins = strings.Fields(val)

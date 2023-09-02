@@ -1,4 +1,5 @@
 package main
+
 import (
 	"errors"
 	"expvar"
@@ -32,8 +33,8 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 
 func (app *application) rateLimit(next http.Handler) http.Handler {
 	type client struct {
-			limiter  *rate.Limiter
-			lastSeen time.Time
+		limiter  *rate.Limiter
+		lastSeen time.Time
 	}
 
 	var (
@@ -44,7 +45,7 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 	go func() {
 		for {
 			time.Sleep(time.Minute)
-	
+
 			mu.Lock()
 			for ip, client := range clients {
 				if time.Since(client.lastSeen) > 3*time.Minute {
@@ -112,10 +113,10 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		user, err := app.models.Users.GetForToken(data.ScopeAuthentication, token)
 		if err != nil {
 			switch {
-				case errors.Is(err, data.ErrRecordNotFound):
-					app.invalidAuthenticationTokenResponse(w, r)
-				default:
-					app.serverErrorResponse(w, r, err)
+			case errors.Is(err, data.ErrRecordNotFound):
+				app.invalidAuthenticationTokenResponse(w, r)
+			default:
+				app.serverErrorResponse(w, r, err)
 				return
 			}
 			return

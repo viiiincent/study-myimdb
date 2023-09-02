@@ -33,7 +33,7 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	token := &Token{
 		UserID: userID,
 		Expiry: time.Now().Add(ttl),
-		Scope: scope,
+		Scope:  scope,
 	}
 
 	randomBytes := make([]byte, 16)
@@ -79,7 +79,6 @@ func (m TokenModel) Insert(token *Token) error {
 	return err
 }
 
-
 func (m TokenModel) DeleteAllForUser(scope string, userID int64) error {
 	query := `
 		DELETE FROM tokens
@@ -92,4 +91,3 @@ func (m TokenModel) DeleteAllForUser(scope string, userID int64) error {
 
 	return err
 }
-

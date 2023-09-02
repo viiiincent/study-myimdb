@@ -23,8 +23,8 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	user := &data.User{
-		Name:  input.Name,
-		Email: input.Email,
+		Name:      input.Name,
+		Email:     input.Email,
 		Activated: false,
 	}
 
@@ -43,11 +43,11 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	err = app.models.Users.Insert(user)
 	if err != nil {
 		switch {
-			case errors.Is(err, data.ErrDuplicateEmail):
-				v.AddError("email", "a user with this email address already exists")
-				app.failedValidationResponse(w, r, v.Errors)
-			default:
-				app.serverErrorResponse(w, r, err)
+		case errors.Is(err, data.ErrDuplicateEmail):
+			v.AddError("email", "a user with this email address already exists")
+			app.failedValidationResponse(w, r, v.Errors)
+		default:
+			app.serverErrorResponse(w, r, err)
 		}
 		return
 	}
@@ -103,11 +103,11 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	user, err := app.models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
 	if err != nil {
 		switch {
-			case errors.Is(err, data.ErrRecordNotFound):
-				v.AddError("token", "invalid or expired activation token")
-				app.failedValidationResponse(w, r, v.Errors)
-			default:
-				app.serverErrorResponse(w, r, err)
+		case errors.Is(err, data.ErrRecordNotFound):
+			v.AddError("token", "invalid or expired activation token")
+			app.failedValidationResponse(w, r, v.Errors)
+		default:
+			app.serverErrorResponse(w, r, err)
 		}
 		return
 	}
@@ -116,10 +116,10 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	err = app.models.Users.Update(user)
 	if err != nil {
 		switch {
-			case errors.Is(err, data.ErrEditConflict):
-				app.editConflictResponse(w, r)
-			default:
-				app.serverErrorResponse(w, r, err)
+		case errors.Is(err, data.ErrEditConflict):
+			app.editConflictResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
 		}
 		return
 	}
