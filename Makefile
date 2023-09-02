@@ -51,7 +51,8 @@ vendor:
 	go mod vendor
 
 current_time = $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-linker_flags = "-s -X main.buildTime=${current_time}"
+git_version = $(shell git describe --always --dirty --tags --long)
+linker_flags = "-s -X main.buildTime=${current_time} -X main.version=${git_version}"
 
 ## build/api: build the cmd/api application
 .PHONY: build/api
