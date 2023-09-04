@@ -60,3 +60,8 @@ build/api:
 	@echo 'Building cmd/api...'
 	go build  -ldflags=${linker_flags} -o=./bin/api ./cmd/api
 	GOOS=linux GOARCH=amd64 go build  -ldflags=${linker_flags} -o=./bin/linux_amd64/api ./cmd/api
+
+production_host_ip = '174.138.34.183'
+.PHONY: production/connect
+production/connect:
+	ssh myimdb@${production_host_ip}
