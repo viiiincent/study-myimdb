@@ -83,3 +83,12 @@ production/configure/api.service:
 		&& sudo systemctl enable api \
 		&& sudo systemctl restart api \
 	'
+
+
+.PHONY: production/configure/caddyfile
+production/configure/caddyfile:
+	rsync -P ./remote/production/Caddyfile myimdb@${production_host_ip}:~
+	ssh -t myimdb@${production_host_ip} '\
+		sudo mv ~/Caddyfile /etc/caddy/ \
+		&& sudo systemctl reload caddy \
+	'
